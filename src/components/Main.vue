@@ -1,9 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer
-      v-model="drawer"
-      app
-    >
+    <v-navigation-drawer v-model="drawer" app>
       <v-list dense>
         <v-list-item link>
           <v-list-item-action>
@@ -24,74 +21,49 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar
-      app
-      color="deep-orange"
-      dark
-    >
+    <v-app-bar app color="deep-orange" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>Электронный учебник</v-toolbar-title>
     </v-app-bar>
 
     <v-content>
-      <v-container
-        class="fill-height"
-        fluid
-      >
-        <v-row
-          align="center"
-          justify="center"
-        >
-          <v-col class="text-center">
-            <v-tooltip left>
-              <template v-slot:activator="{ on }">
-                <v-btn
-                  :href="source"
-                  icon
-                  large
-                  target="_blank"
-                  v-on="on"
-                >
-                  <v-icon large>mdi-code-tags</v-icon>
-                </v-btn>
-              </template>
-              <span>Source</span>
-            </v-tooltip>
-
-            <v-tooltip right>
-              <template v-slot:activator="{ on }">
-                <v-btn
-                  icon
-                  large
-                  href="https://codepen.io/johnjleider/pen/zgxeLQ"
-                  target="_blank"
-                  v-on="on"
-                >
-                  <v-icon large>mdi-codepen</v-icon>
-                </v-btn>
-              </template>
-              <span>Codepen</span>
-            </v-tooltip>
-          </v-col>
+      <v-container>
+        <v-row align="center" justify="center">
+          <div v-for="problem in problems" :key="problem.id">
+            <v-col class="text-center">
+              <Problem 
+                :text="problem.text" 
+                :problemClass="problem.class"
+                :tags="problem.tags"
+                :category="problem.category"
+              ></Problem>
+            </v-col>
+          </div>
         </v-row>
       </v-container>
     </v-content>
-    <v-footer
-      color="deep-orange"
-      app
-    >
+    <v-footer color="deep-orange" app>
       <span class="white--text">vanawy &copy; 2019</span>
     </v-footer>
   </v-app>
 </template>
 
 <script>
-  export default {
-    props: {
-      source: String,
-    },
-    data: () => ({
-      drawer: null,
-    }),
-  }
+import Problem from "./Problem";
+import Problems from "../assets/problems.json";
+export default {
+  components: {
+    Problem
+  },
+  props: {
+    source: String
+  },
+  data: () => ({
+    drawer: null,
+    problems: []
+  }),
+  created: function () {
+      this.problems = Problems.data;
+    }
+};
 </script>
