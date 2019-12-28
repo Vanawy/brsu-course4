@@ -33,7 +33,7 @@
 
     <v-app-bar app dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title>Задачи по информатике</v-toolbar-title>
+      <v-toolbar-title>Задачи по информатике | {{ titles[selected_category] }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon @click="showFavorites">
           <v-icon v-if="this.selected_category == 'favs'">mdi-star</v-icon>
@@ -84,6 +84,7 @@ export default {
     categories: [],   
     prev_category: "favs",
     selected_category: 1,
+    titles: [],
   }),
   methods: {
     showFavorites: function() {
@@ -93,23 +94,50 @@ export default {
         this.selectCategory("favs");
       }
     },
-    selectCategory(id){
+    selectCategory(id) {
       this.prev_category = this.selected_category;
       this.selected_category = id;
       this.drawer = false;
+      this.$cookie.set("currnet-category", id);
+    },
+    addProblemToFavorites(id) {
+      let favs = this.getFavorites();
+      if(favs.indexOf(id) == -1){
+        favs.push(id);
+      }
+      this.setFavorites(favs);
+    },
+    deleteProblemFromFavorites(id) {
+      let favs = this.getFavorites();
+      favs.filter(fav => fav != id);
+      this.setFavorites(favs);
+    },
+    setFavorites(ids) {
+        this.$cookie.get('fav-problems', ids);
+    },
+    getFavorites() {
+      let favs = this.$cookie.get('fav-problems');
+      if(favs !== null){
+        return favs;
+      }
+      return [];
     }
   },
   created: function () {
+    // parse data from json
+    // and setup categories
     this.categories = Problems.categories;
-    let titles = [];
     for(let cat of this.categories){
-      titles[cat.id] = cat.title;
+      this.titles[cat.id] = cat.title;
     }
+    this.titles["favs"] = "Избранные";
     this.problems = [];
     for(let problem of Problems.data){
-      problem.category_title = titles[problem.category];
+      problem.category_title = this.titles[problem.category];
       this.problems.push(problem);
     }
+    // get last used category from cookies
+    this.selected_category = this.$cookie.get("currnet-category") ? this.$cookie.get("currnet-category") : 1;
   },
   computed: {
     selected_problems: function() {
@@ -119,7 +147,7 @@ export default {
       return this.problems.filter(problem => problem.category == this.selected_category);
     },
     favorites: function() {
-      return [this.problems[10]];
+      return this.getFavorites();
     },
     isFavorites: function() {
       return this.selected_category == "favs";
