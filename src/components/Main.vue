@@ -2,6 +2,15 @@
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer" app temporary width="max">
       <v-list dense>
+        <v-list-item link @click="drawer = false">
+          <v-list-item-action>
+            <v-icon>mdi-close</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Закрыть меню</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider></v-divider>
         <v-list-item link @click="showFavorites()">
           <v-list-item-action>
             <v-icon>mdi-star-outline</v-icon>
@@ -87,6 +96,7 @@ export default {
     selectCategory(id){
       this.prev_category = this.selected_category;
       this.selected_category = id;
+      this.drawer = false;
     }
   },
   created: function () {
