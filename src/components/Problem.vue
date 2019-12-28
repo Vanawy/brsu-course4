@@ -1,6 +1,6 @@
 <template>
-  <v-card>
-    <v-card-title>Задача для {{ problem.class }}-го класса</v-card-title>
+  <v-card fluid>
+    <v-card-title>Задача на тему "{{ problem.category_title }}"</v-card-title>
     <v-card-text>{{ preview }}</v-card-text>
     <v-card-actions>
       <TaskModal :problem="problem"></TaskModal>

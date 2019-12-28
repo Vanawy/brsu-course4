@@ -8,14 +8,11 @@
         <v-btn icon dark @click="dialog = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
-        <v-toolbar-title>Условие задачи</v-toolbar-title>
+        <v-toolbar-title>{{ problem.category_title }}</v-toolbar-title>
       </v-toolbar>
       <v-card>
         <v-container>
           <p>{{ problem.text }}</p>
-          <p class="overline">Задача для {{ problem.class }}-го класса</p>
-          <v-chip v-for="(tag, k) in problem.tags" :key="k">{{ tag }}</v-chip>
-          
         </v-container>
       </v-card>
     </v-dialog>
