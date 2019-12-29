@@ -1,9 +1,13 @@
 <template>
   <v-card fluid>
-    <v-card-title>Задача на тему "{{ problem.category_title }}"</v-card-title>
+    <v-card-title>#{{ problem.id }} Задача на тему "{{ problem.category_title }}"</v-card-title>
     <v-card-text>{{ preview }}</v-card-text>
     <v-card-actions>
       <TaskModal :problem="problem"></TaskModal>
+      <v-btn @click="toggleFavorites">
+        <v-icon v-if="problem.isFavorite">mdi-star</v-icon>
+        <v-icon v-else>mdi-star-outline</v-icon>
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -17,9 +21,8 @@ export default {
     TaskModal
   },
   props: {
-    problem: Object
+    problem: Object,
   },
-  data: () => ({}),
   computed: {
     preview: function() {
       if (this.problem.text.length > PREVIEW_LENGTH) {
@@ -30,7 +33,9 @@ export default {
     }
   },
   methods: {
-
+    toggleFavorites: function() {
+      this.$emit("fav", this.problem.id);
+    }
   }
 };
 </script>

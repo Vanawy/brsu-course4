@@ -55,6 +55,8 @@
             <v-col class="text-center">
               <Problem 
                 :problem="problem"
+                :isFavorite="problem.isFavorite"
+                @fav="toggleFav"
               ></Problem>
             </v-col>
           </div>
@@ -101,6 +103,7 @@ export default {
       this.$cookie.set("currnet-category", id);
     },
     addProblemToFavorites(id) {
+      this.problems.find(p => p.id == id).isFavorite = true;
       let favs = this.getFavorites();
       if(favs.indexOf(id) == -1){
         favs.push(id);
@@ -108,19 +111,38 @@ export default {
       this.setFavorites(favs);
     },
     deleteProblemFromFavorites(id) {
+      this.problems.find(p => p.id == id).isFavorite = false;
       let favs = this.getFavorites();
-      favs.filter(fav => fav != id);
+      favs = favs.filter(fav => fav != id);
       this.setFavorites(favs);
     },
+    toggleFav(id) {
+      if(this.isInFavorites(id)){
+        this.deleteProblemFromFavorites(id);
+      }else{
+        this.addProblemToFavorites(id);
+      }
+    },
     setFavorites(ids) {
-        this.$cookie.get('fav-problems', ids);
+        this.$cookie.set('fav-problems', JSON.stringify(ids));
     },
     getFavorites() {
-      let favs = this.$cookie.get('fav-problems');
+      let favs = JSON.parse(this.$cookie.get('fav-problems'));
       if(favs !== null){
         return favs;
       }
       return [];
+    },
+    favorites: function() {
+      let favs = [];
+      let ids = this.getFavorites();
+      for(let id of ids){
+        favs.push(this.problems.find(problem => problem.id == id));
+      }
+      return favs;
+    },
+    isInFavorites: function(id) {
+      return this.getFavorites().indexOf(id) !== -1;
     }
   },
   created: function () {
@@ -130,10 +152,12 @@ export default {
     for(let cat of this.categories){
       this.titles[cat.id] = cat.title;
     }
+    const favs = this.getFavorites();
     this.titles["favs"] = "Избранные";
     this.problems = [];
     for(let problem of Problems.data){
       problem.category_title = this.titles[problem.category];
+      problem.isFavorite = favs.indexOf(problem.id) !== -1;
       this.problems.push(problem);
     }
     // get last used category from cookies
@@ -142,12 +166,9 @@ export default {
   computed: {
     selected_problems: function() {
       if(this.isFavorites){
-        return this.favorites;
+        return this.favorites();
       }
       return this.problems.filter(problem => problem.category == this.selected_category);
-    },
-    favorites: function() {
-      return this.getFavorites();
     },
     isFavorites: function() {
       return this.selected_category == "favs";

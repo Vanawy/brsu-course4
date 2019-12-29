@@ -8,7 +8,7 @@
         <v-btn icon dark @click="dialog = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
-        <v-toolbar-title>{{ problem.category_title }}</v-toolbar-title>
+        <v-toolbar-title>#{{ problem.id }} | {{ problem.category_title }}</v-toolbar-title>
       </v-toolbar>
       <v-card>
         <v-container>
