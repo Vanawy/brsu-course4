@@ -1,10 +1,15 @@
 <template>
-  <v-card fluid>
+  <v-card 
+    fluid 
+    max-width="400"
+    class="mx-auto"
+  >
     <v-card-title>#{{ problem.id }} Задача на тему "{{ problem.category_title }}"</v-card-title>
     <v-card-text>{{ preview }}</v-card-text>
     <v-card-actions>
-      <TaskModal :problem="problem"></TaskModal>
-      <v-btn @click="toggleFavorites">
+      <TaskModal :problem="problem" @fav-modal="toggleFavorites"></TaskModal>
+      <v-spacer></v-spacer>
+      <v-btn @click="toggleFavorites" right>
         <v-icon v-if="problem.isFavorite">mdi-star</v-icon>
         <v-icon v-else>mdi-star-outline</v-icon>
       </v-btn>

@@ -1,6 +1,5 @@
 <template>
-  <v-row justify="center">
-    <v-dialog v-model="dialog" transition="dialog-bottom-transition">
+    <v-dialog v-model="dialog" transition="dialog-bottom-transition" max-width="600">
       <template v-slot:activator="{ on }">
         <v-btn v-on="on">Условие</v-btn>
       </template>
@@ -14,9 +13,15 @@
         <v-container>
           <p>{{ problem.text }}</p>
         </v-container>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn @click="$emit('fav-modal')">
+            <v-icon v-if="problem.isFavorite">mdi-star</v-icon>
+            <v-icon v-else>mdi-star-outline</v-icon>
+          </v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-row>
 </template>
 <script>
 export default {

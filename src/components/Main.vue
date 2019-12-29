@@ -44,9 +44,11 @@
     <v-content>
       <v-container fluid>
         <v-row>
+          <v-spacer></v-spacer>
           <div>
             <v-col class="text-center">
               Показано {{ selected_problems.length }} из {{ problems.length }} задач
+              <v-progress-linear :value="selected_problems.length / problems.length * 100"></v-progress-linear>
             </v-col>
           </div>
         </v-row>
