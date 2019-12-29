@@ -13,21 +13,29 @@
         <v-divider></v-divider>
         <v-list-item link @click="showFavorites()">
           <v-list-item-action>
-            <v-icon>mdi-star-outline</v-icon>
+            <v-icon v-if="this.selected_category == 'favs'">mdi-star</v-icon>
+            <v-icon v-else>mdi-star-outline</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Избранные задачи</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-divider></v-divider>
-        <v-list-item v-for="(category, k) in categories" :key="k" link @click="selectCategory(category.id)"> <!-- :target="category.id" -->
-          <v-list-item-action>
-            <v-icon>mdi-{{ category.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>{{ category.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+        <v-list-item-group>
+          <v-list-item 
+            v-for="(category, k) in categories" 
+            :key="k" 
+            link 
+            @click="selectCategory(category.id)"
+          >
+            <v-list-item-action>
+              <v-icon>mdi-{{ category.icon }}</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>{{ category.title }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
 
