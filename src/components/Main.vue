@@ -49,7 +49,7 @@
         </v-btn>
     </v-app-bar>
 
-    <v-content>
+    <v-content class="pa-0">
       <v-container fluid>
         <v-row>
           <v-spacer></v-spacer>
@@ -59,6 +59,7 @@
               <v-progress-linear :value="selected_problems.length / problems.length * 100"></v-progress-linear>
             </v-col>
           </div>
+          <v-spacer class="hidden-xs-only"></v-spacer>
         </v-row>
         <v-row align="center" justify="center">
           <div v-for="problem in selected_problems" :key="problem.id">
